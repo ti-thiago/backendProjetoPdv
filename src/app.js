@@ -2,6 +2,8 @@ const consign = require("consign");
 
 const express = require("express");
 
+require("./models/index");
+
 const app = express();
 
 const cors = require("cors");

@@ -152,7 +152,7 @@ class PessoaFisica extends Model {
           },
         },
         tel_residencial: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BIGINT,
           validate: {
             len: {
               args: [0, 11],
@@ -162,7 +162,7 @@ class PessoaFisica extends Model {
           },
         },
         tel_celular: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BIGINT,
           validate: {
             len: {
               args: [0, 11],
@@ -172,7 +172,7 @@ class PessoaFisica extends Model {
           },
         },
         tel_adicional: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BIGINT,
           validate: {
             len: {
               args: [0, 11],

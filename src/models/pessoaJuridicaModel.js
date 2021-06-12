@@ -60,6 +60,7 @@ class PessoaJuridica extends Model {
         },
         insc_estadual: {
           type: DataTypes.INTEGER,
+          allowNull: false,
           validate: {
             notEmpty: {
               msg: "Preencha o campo Insc. Estadual!",
@@ -128,7 +129,7 @@ class PessoaJuridica extends Model {
           },
         },
         telefone: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BIGINT,
           validate: {
             len: {
               args: [0, 11],
