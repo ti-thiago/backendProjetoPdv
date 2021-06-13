@@ -59,7 +59,7 @@ class PessoaJuridica extends Model {
           },
         },
         insc_estadual: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BIGINT,
           allowNull: false,
           validate: {
             notEmpty: {
@@ -132,7 +132,7 @@ class PessoaJuridica extends Model {
           type: DataTypes.BIGINT,
           validate: {
             len: {
-              args: [0, 11],
+              args: [0, 12],
               msg: "O campo Telefone  deve ter no máximo 11 caracter(es).",
             },
           },

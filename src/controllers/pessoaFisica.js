@@ -24,7 +24,7 @@ exports.post = async (req, res, next) => {
       {
         nome: req.body.nome,
         dt_nascimento: req.body.dt_nascimento,
-        ie_sexo: req.body.ie_sexo,
+        sexo: req.body.sexo,
         nr_cpf: req.body.nr_cpf,
         nm_mae: req.body.nm_mae,
         nr_identidade: req.body.nr_identidade,
@@ -58,11 +58,11 @@ exports.put = async (req, res, next) => {
     const pessoaFisica = await PessoaFisica.findByPk(id);
 
     if (!pessoaFisica) throw new Error('Usuário não foi encontrado ');
-    await PessoaFisica.update(
+    await pessoaFisica.update(
       {
         nome: req.body.nome,
         dt_nascimento: req.body.dt_nascimento,
-        ie_sexo: req.body.ie_sexo,
+        sexo: req.body.sexo,
         nr_cpf: req.body.nr_cpf,
         nm_mae: req.body.nm_mae,
         nr_identidade: req.body.nr_identidade,
@@ -87,7 +87,7 @@ exports.put = async (req, res, next) => {
 
     return res.status(201).json(pessoaFisica);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(err);
   }
 };
 // exports.post = (req, res, next) => {

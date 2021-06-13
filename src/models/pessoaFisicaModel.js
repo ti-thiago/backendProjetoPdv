@@ -155,9 +155,9 @@ class PessoaFisica extends Model {
           type: DataTypes.BIGINT,
           validate: {
             len: {
-              args: [0, 11],
+              args: [0, 12],
               msg:
-                "O campo Telefone Residencial deve ter no máximo 11 caracter(es).",
+                "O campo Telefone Residencial deve ter no máximo 12 caracter(es).",
             },
           },
         },
@@ -165,9 +165,9 @@ class PessoaFisica extends Model {
           type: DataTypes.BIGINT,
           validate: {
             len: {
-              args: [0, 11],
+              args: [0, 12],
               msg:
-                "O campo Telefone Celular deve ter no máximo 11 caracter(es).",
+                "O campo Telefone Celular deve ter no máximo 12 caracter(es).",
             },
           },
         },
@@ -175,9 +175,9 @@ class PessoaFisica extends Model {
           type: DataTypes.BIGINT,
           validate: {
             len: {
-              args: [0, 11],
+              args: [0, 12],
               msg:
-                "O campo Telefone Adicional deve ter no máximo 11 caracter(es).",
+                "O campo Telefone Adicional deve ter no máximo 12 caracter(es).",
             },
           },
         },

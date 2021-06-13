@@ -3,33 +3,12 @@ const poolMysql = require('../middleware/pool-factory');
 const util = require('../utils/util');
 const Produto = require('../models/produtoModel');
 
-exports.post = (req, res, next) => {
-  let err;
-  if (err) return res.status(500).send(`Erro ao cadastrar ${err.message}`);
-  return res
-    .status(201)
-    .json(`Cadastro realizado com sucesso! Seja bem vindo `);
-};
-exports.put = (req, res, next) => {
-  const { id } = req.params;
-
-  res.status(201).send(`Requisição recebida com sucesso! ${id}`);
-};
-exports.delete = (req, res, next) => {
-  const { id } = req.params;
-  res.status(200).send(`Requisição recebida com sucesso! ${id}`);
-};
-
 exports.get = async (req, res, next) => {
   const { id } = req.params;
   let result;
   try {
     if (id) {
-      result = await Produto.findAll({
-        where: {
-          idproduto: id,
-        },
-      });
+      result = await Produto.findByPk(id);
     } else {
       result = await Produto.findAll();
     }
@@ -50,4 +29,61 @@ exports.get = async (req, res, next) => {
   //       x = { rows };
   //       return res.status(200).json(x);
   //     }
+};
+
+exports.post = async (req, res, next) => {
+  try {
+    await Produto.create({
+      cod_barras: req.body.cod_barras,
+      desc_produto: req.body.desc_produto,
+      preco_venda: req.body.preco_venda,
+      unidade_medida: req.body.unidade_medida,
+      observacao: req.body.observacao,
+    });
+
+    return res.status(201).send('Produto cadastrado com sucesso');
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+};
+exports.put = async (req, res, next) => {
+  const { id } = req.params;
+
+  const transaction = await Produto.sequelize.transaction();
+  try {
+    const produto = await Produto.findByPk(id);
+
+    if (!produto) throw new Error('Produto não encontrado ');
+    await produto.update(
+      {
+        cod_barras: req.body.cod_barras,
+        desc_produto: req.body.desc_produto,
+        preco_venda: req.body.preco_venda,
+        unidade_medida: req.body.unidade_medida,
+        observacao: req.body.observacao,
+      },
+      {
+        where: { idproduto: produto.idproduto },
+      },
+      { transaction }
+    );
+
+    await transaction.commit();
+
+    return res.status(201).json(produto);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+};
+exports.delete = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const produto = await Produto.findByPk(id);
+
+    await produto.destroy();
+
+    return res.status(201).json(`Produto excluído com sucesso`);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
 };

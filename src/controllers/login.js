@@ -1,15 +1,12 @@
-const convert = require('xml-js');
-const fs = require('fs');
-const path = require('path');
-const poolMysql = require('../middleware/pool-factory');
-
 const PessoaFisica = require('../models/pessoaFisicaModel');
 const User = require('../models/userModel');
 
 exports.get = async (req, res, next) => {
+  const { id } = req.params;
+  let pessoaFisica;
   try {
-    // const users = await User.findAll();
-    const pessoaFisica = await PessoaFisica.findByPk(2);
+    if (id) pessoaFisica = await PessoaFisica.findByPk(id);
+
     if (!pessoaFisica) throw new Error('Não foi encontrado pessoa física');
     return res.status(200).json(pessoaFisica);
   } catch (err) {
@@ -22,16 +19,7 @@ exports.post = async (req, res, next) => {
     const { nome_usuario, senha } = req.body;
     if (!nome_usuario || !senha)
       throw new Error('Login ou senha não informados');
-    // poolMysql.query(
-    //   `SELECT * FROM usuario WHERE usuario.nome_usuario = ('${nome_usuario}') AND usuario.senha = ('${senha}')`,
-    //   (err, rows, fields) => {
-    //     if (err) {
-    //       console.log(err);
-    //       return res.status(500).json(err.message);
-    //     }
 
-    //   }
-    // );
     const pessoaFisica = await User.findAll({
       where: {
         nome_usuario,
@@ -46,8 +34,7 @@ exports.post = async (req, res, next) => {
 
     return res.status(201).json(result);
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    return res.status(500).json(`${err}`);
   }
 };
 exports.put = (req, res, next) => {
