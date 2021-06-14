@@ -14,9 +14,7 @@ exports.get = async (req, res, next) => {
     return res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .json(`Ocorreu um erro ao obter os dados de usuário ${err}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -39,7 +37,9 @@ exports.post = async (req, res, next) => {
       .status(201)
       .json(`Cadastro realizado com sucesso! Seja bem vindo `);
   } catch (err) {
-    return res.status(500).send(`Erro ao cadastrar ${err}`);
+    await transaction.rollback();
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -66,7 +66,9 @@ exports.put = async (req, res, next) => {
 
     return res.json(usuario);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    await transaction.rollback();
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -79,6 +81,7 @@ exports.delete = async (req, res, next) => {
 
     return res.status(200).json(`Usuário excluído com sucesso`);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };

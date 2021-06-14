@@ -1,4 +1,4 @@
-const vendaController = require("../controllers/movimentacaoProduto");
+const vendaController = require("../controllers/venda");
 
 module.exports = (app) => {
   app.post("/venda", vendaController.post);

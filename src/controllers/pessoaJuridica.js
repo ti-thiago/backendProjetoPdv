@@ -14,7 +14,7 @@ exports.get = async (req, res, next) => {
     if (result) return res.status(201).json(result);
   } catch (err) {
     console.log(err);
-    return res.status(500).send(`${err}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.post = async (req, res, next) => {
@@ -45,7 +45,9 @@ exports.post = async (req, res, next) => {
 
     return res.json(`Sucesso ${pessoaJuridica[0]}`);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    await transaction.rollback();
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.put = async (req, res, next) => {
@@ -83,7 +85,9 @@ exports.put = async (req, res, next) => {
 
     return res.status(201).json(pessoaJuridica);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    await transaction.rollback();
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -96,6 +100,7 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Usuário excluído com sucesso`);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };

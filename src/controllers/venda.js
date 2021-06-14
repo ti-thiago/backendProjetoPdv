@@ -1,4 +1,5 @@
 const Venda = require('../models/vendaModel');
+const MovimentacaoProduto = require('../models/movimentacaoProdutoModel');
 
 exports.get = async (req, res, next) => {
   const { id } = req.params;
@@ -13,31 +14,35 @@ exports.get = async (req, res, next) => {
     return res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    return res.status(500).send(`${err}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.post = async (req, res, next) => {
   const transaction = await Venda.sequelize.transaction();
+
   try {
-    await Venda.create(
+    const venda = await Venda.create(
       {
         idpessoa_fisica: req.body.idpessoa_fisica,
         idpessoa_juridica: req.body.idpessoa_juridica,
-        valor_bruto: req.body.valor_bruto,
-        valor_desconto: req.body.valor_desconto,
-        valor_liquido: req.body.valor_liquido,
+        vl_bruto: req.body.vl_bruto,
+        vl_desconto: req.body.vl_desconto,
+        vl_liquido: req.body.vl_liquido,
         status: 'A',
       },
       { transaction }
     );
 
+    req.body.itens.forEach((item) => (item.idvenda = venda.idvenda));
+
+    await MovimentacaoProduto.bulkCreate(req.body.itens, { transaction });
+
     await transaction.commit();
     return res.status(201).json(`Venda efetuada com sucesso!`);
   } catch (err) {
+    await transaction.rollback();
     console.log(err);
-    return res
-      .status(500)
-      .send(`Erro ao efetuar a entrada da NF ${err.message}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.put = (req, res, next) => {
@@ -54,6 +59,7 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Venda excluída com sucesso`);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };

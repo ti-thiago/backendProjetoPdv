@@ -11,7 +11,7 @@ exports.get = async (req, res, next) => {
     return res.status(200).json(pessoaFisica);
   } catch (err) {
     console.log(err);
-    return res.status(500).send(`${err}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.post = async (req, res, next) => {
@@ -34,7 +34,8 @@ exports.post = async (req, res, next) => {
 
     return res.status(201).json(result);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.put = (req, res, next) => {

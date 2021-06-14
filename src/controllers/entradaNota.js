@@ -1,4 +1,5 @@
 const EntradaNota = require('../models/entradaNotaModel');
+const MovimentacaoProduto = require('../models/movimentacaoProdutoModel');
 
 exports.get = async (req, res, next) => {
   const { id } = req.params;
@@ -13,9 +14,7 @@ exports.get = async (req, res, next) => {
     return res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .send(`Ocorreu um erro ao obter os dados de produto ${err}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -25,7 +24,7 @@ exports.post = async (req, res, next) => {
     if (!req.body.idpessoa_fisica && !req.body.idpessoa_juridica)
       throw new Error('informe a pessoa ou estabelecimento');
 
-    await EntradaNota.create(
+    const entradaProduto = await EntradaNota.create(
       {
         idpessoa_fisica: req.body.idpessoa_fisica,
         idpessoa_juridica: req.body.idpessoa_juridica,
@@ -37,13 +36,16 @@ exports.post = async (req, res, next) => {
       { transaction }
     );
 
+    req.body.itens.forEach(
+      (item) => (item.identrada_produto = entradaProduto.identrada_nota)
+    );
+    await MovimentacaoProduto.bulkCreate(req.body.itens, { transaction });
     await transaction.commit();
     return res.status(201).json(`Cadastro de nota efetuado com sucesso!`);
   } catch (err) {
+    await transaction.rollback();
     console.log(err);
-    return res
-      .status(500)
-      .send(`Erro ao efetuar a entrada da NF ${err.message}`);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -62,6 +64,7 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Usuário excluído com sucesso`);
   } catch (err) {
-    return res.status(500).send(err);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };

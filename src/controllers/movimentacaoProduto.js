@@ -14,7 +14,8 @@ exports.get = async (req, res, next) => {
 
     return res.status(201).json(result);
   } catch (err) {
-    return res.status(500).json(err);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.post = async (req, res, next) => {
@@ -37,7 +38,8 @@ exports.post = async (req, res, next) => {
 
     return res.json(`Sucesso ${movimentacaoProduto[0]}`);
   } catch (err) {
-    return res.status(500).send(`${err}`);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 exports.put = async (req, res, next) => {
@@ -71,7 +73,8 @@ exports.put = async (req, res, next) => {
 
     return res.status(201).json(movimentacaoProduto);
   } catch (err) {
-    return res.status(500).send(err);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };
 
@@ -84,6 +87,7 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Movimentação excluída com sucesso`);
   } catch (err) {
-    return res.status(500).send(err);
+    console.log(err);
+    return res.status(500).json({ err: err.message });
   }
 };

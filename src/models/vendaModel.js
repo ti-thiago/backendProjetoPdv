@@ -17,7 +17,7 @@ class Venda extends Model {
           type: DataTypes.INTEGER,
         },
 
-        valor_bruto: {
+        vl_bruto: {
           type: DataTypes.DOUBLE,
           allowNull: false,
           defaultValue: 0,
@@ -30,7 +30,7 @@ class Venda extends Model {
             },
           },
         },
-        valor_desconto: {
+        vl_desconto: {
           type: DataTypes.DOUBLE,
           allowNull: false,
           defaultValue: 0,
@@ -43,7 +43,7 @@ class Venda extends Model {
             },
           },
         },
-        valor_liquido: {
+        vl_liquido: {
           type: DataTypes.DOUBLE,
           allowNull: false,
           defaultValue: 0,
