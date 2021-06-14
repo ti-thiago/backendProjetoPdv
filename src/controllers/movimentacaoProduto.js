@@ -37,7 +37,7 @@ exports.post = async (req, res, next) => {
 
     return res.json(`Sucesso ${movimentacaoProduto[0]}`);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(`${err}`);
   }
 };
 exports.put = async (req, res, next) => {

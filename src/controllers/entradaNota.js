@@ -15,7 +15,7 @@ exports.get = async (req, res, next) => {
     console.log(err);
     return res
       .status(500)
-      .json(`Ocorreu um erro ao obter os dados de produto ${err}`);
+      .send(`Ocorreu um erro ao obter os dados de produto ${err}`);
   }
 };
 
@@ -62,6 +62,6 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Usuário excluído com sucesso`);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(err);
   }
 };

@@ -16,9 +16,7 @@ exports.get = async (req, res, next) => {
     return res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .json(`Ocorreu um erro ao obter os dados de produto ${err}`);
+    return res.status(500).send(`${err}`);
   }
   //   poolMysql.query(
   //     `SELECT *
@@ -43,7 +41,7 @@ exports.post = async (req, res, next) => {
 
     return res.status(201).send('Produto cadastrado com sucesso');
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).send(`${err}`);
   }
 };
 exports.put = async (req, res, next) => {
@@ -72,7 +70,7 @@ exports.put = async (req, res, next) => {
 
     return res.status(201).json(produto);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).send(`${err}`);
   }
 };
 exports.delete = async (req, res, next) => {
@@ -84,6 +82,6 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Produto excluído com sucesso`);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(`${err}`);
   }
 };

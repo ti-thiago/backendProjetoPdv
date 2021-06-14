@@ -11,10 +11,11 @@ exports.get = async (req, res, next) => {
     } else {
       result = await PessoaFisica.findAll();
     }
+    if (!result) throw new Error('Pessoa não encontrada');
 
     return res.status(201).json(result);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(`${err}`);
   }
 };
 exports.post = async (req, res, next) => {
@@ -47,7 +48,7 @@ exports.post = async (req, res, next) => {
 
     return res.json(`Sucesso ${pessoaFisica[0]}`);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(`${err}`);
   }
 };
 exports.put = async (req, res, next) => {
@@ -178,6 +179,6 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Usuário excluído com sucesso`);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(err);
   }
 };

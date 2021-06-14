@@ -13,9 +13,7 @@ exports.get = async (req, res, next) => {
     return res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .json(`Ocorreu um erro ao obter os dados de venda ${err}`);
+    return res.status(500).send(`${err}`);
   }
 };
 exports.post = async (req, res, next) => {
@@ -56,6 +54,6 @@ exports.delete = async (req, res, next) => {
 
     return res.status(201).json(`Venda excluída com sucesso`);
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).send(`${err}`);
   }
 };
